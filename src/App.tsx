@@ -8,6 +8,7 @@ import './App.css';
  */
 interface IState {
   data: ServerRespond[],
+  // decalre showGraph as a boolean
   showGraph: boolean,
 }
 
@@ -23,6 +24,7 @@ class App extends Component<{}, IState> {
       // data saves the server responds.
       // We use this state to parse data down to the child element (Graph) as element property
       data: [],
+      // dont show the graph on the site
       showGraph: false,
     };
   }
@@ -41,18 +43,24 @@ class App extends Component<{}, IState> {
    */
 
   getDataFromServer() {
+    // variable for counting the repeats
     let x = 0;
     const interval = setInterval(() => {
+      // get data from server
       DataStreamer.getData((serverResponds: ServerRespond[]) => {
         this.setState({
           data: serverResponds,
+          // make the graph display on the site after the first data is received
           showGraph: true,
         });
       });
+      // increment the counter by 1
       x++;
-      if (x > 100000) {
+      // stop the interval after 1000 repeats
+      if (x > 1000) {
         clearInterval(interval);
       }
+      // interval is set to 100ms
     }, 100);
   }
 
